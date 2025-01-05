@@ -3,8 +3,7 @@ import { MONGODB_URL } from "./Process";
 
 export const connectBD = async () => {
   try {
-    const URL = MONGODB_URL;
-    const { connection } = await mongoose.connect(URL);
+    const { connection } = await mongoose.connect(MONGODB_URL);
     const urlBase = `${connection.host}:${connection.port}/${connection.name}`;
     console.log("Database connected on", urlBase);
   } catch (error) {
