@@ -1,6 +1,7 @@
 import app from "./server";
+import { PORT } from "./config/Process";
 
-const Port = 3000;
+const Port = PORT;
 
 app.listen(Port, () => {
   console.log("Server listening on port " + Port);
