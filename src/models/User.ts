@@ -1,5 +1,11 @@
 import mongoose from "mongoose";
 
+interface IUser {
+  name: string;
+  email: string;
+  password: string;
+}
+
 const userSchema = new mongoose.Schema({
   // el trim lo que hace es que si existen espacios en blanco al principio o al final de la cadena, los elimina
   name: { type: String, required: true, trim: true },
@@ -8,5 +14,5 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true, trim: true },
 });
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model<IUser>("User", userSchema);
 export default User;
