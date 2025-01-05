@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist", // donde se compila el proyecto ya en produccion
+    "rootDir": "./src", // carpeta principal del proyecto
+    "lib": ["ESNext"], // ultima version de javascript que se puede usar
+    "target": "ESNext", // ESNext es la ultima version de javascript y de typescript
+    "moduleResolution": "NodeNext", // resolucion de modulos de node
+    "module": "NodeNext", // modulos de node para importar y exportar, y como se compilan
+    "strict": false, // no se necesita que sea estricto
+    "sourceMap": true,
+    "esModuleInterop": true, // permite importar modulos de commonjs en ESmacript sin problemas
+    "declaration": true // crea un archivo de definicion de tipos
+  },
+  "include": ["src/**/*.ts"], // archivos que se van a compilar
+  "exclude": ["node_modules"] // archivos que no se van a compilar
+}
