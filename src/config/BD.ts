@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import colors from "colors";
 import { MONGODB_URL } from "./Process";
 
+let count = 2;
 export const connectBD = async () => {
   try {
     if (!MONGODB_URL) {
@@ -14,6 +15,16 @@ export const connectBD = async () => {
     console.error(
       colors.bgRed.white.bold(`Error connecting to the database ${error}`)
     );
-    process.exit(1);
+    if (count > 0) {
+      count--;
+      console.log(
+        colors.yellow(
+          `Retrying connection to the database. remaining attempts: ${
+            count + 1
+          }`
+        )
+      );
+      setTimeout(connectBD, 5000); // Retry after 5 seconds
+    } else process.exit(1);
   }
 };
