@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
 import User from "../models/User";
+import { hashPassword } from "../utils/auth";
 
 export const createAccount = async (req: Request, res: Response) => {
   try {
-    const { email } = req.body;
+    const { email, password } = req.body;
     const userExists = await User.findOne({
       email,
     });
@@ -13,6 +14,7 @@ export const createAccount = async (req: Request, res: Response) => {
       return;
     }
     const newUser = new User(req.body);
+    newUser.password = await hashPassword(password);
     await newUser.save();
     // res.send("User created successfully");
     res.status(201).json(newUser);
