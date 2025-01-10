@@ -3,6 +3,15 @@ import User from "../models/User";
 
 export const createAccount = async (req: Request, res: Response) => {
   try {
+    const { email } = req.body;
+    const userExists = await User.findOne({
+      email,
+    });
+    if (userExists) {
+      const error = new Error("User already exists");
+      res.status(409).json({ error: error.message });
+      return;
+    }
     const newUser = new User(req.body);
     await newUser.save();
     // res.send("User created successfully");
