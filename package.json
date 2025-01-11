@@ -17,7 +17,8 @@
     "colors": "^1.4.0",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "mongoose": "^8.9.3",
+    "express-validator": "^7.2.1",
+    "mongoose": "^8.9.4",
     "slug": "^10.0.0"
   },
   "devDependencies": {
@@ -26,6 +27,6 @@
     "@types/slug": "^5.0.9",
     "nodemon": "^3.1.9",
     "ts-node": "^10.9.2",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.3"
   }
 }
