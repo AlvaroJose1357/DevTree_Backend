@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import User from "../models/User";
-import { hashPassword } from "../utils/auth";
+import { checkPassword, hashPassword } from "../utils/auth";
 
 export const createAccount = async (req: Request, res: Response) => {
   // se esta utilizando la importacion dinamica para importar la libreria slug debido a que en la version 10.0.0 de la libreria solamente funciona con ESModules y Como estamos usando Typescript que se encarga de compilar nuestro codigo este lo pasa a CommonJS y esto genera un error, y para solucionar este problema se utiliza la importacion dinamica para que asi cuando se compile el codigo se pueda importar la libreria slug de manera correcta
@@ -37,6 +37,29 @@ export const createAccount = async (req: Request, res: Response) => {
     await newUser.save();
     // res.send("User created successfully");
     res.status(201).json(newUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const login = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+  try {
+    const userExist = await User.findOne({ email });
+    if (!userExist) {
+      const error = new Error("User not found");
+      res.status(404).json({ error: error.message });
+      return;
+    }
+    // validar la contraseña, si la contraseña no es correcta devolver un error
+    const isValidPassword = await checkPassword(password, userExist.password);
+    if (!isValidPassword) {
+      const error = new Error("Invalid password");
+      res.status(401).json({ error: error.message });
+      return;
+    }
+    res.status(200).json({ message: "User logged in" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
