@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { body } from "express-validator";
 import { createAccount } from "../controllers/users";
+import { handleInputError } from "../middleware";
 const router = Router();
 
 // Autenticacion
@@ -13,6 +14,7 @@ router.post(
   body("password")
     .isLength({ min: 8 })
     .withMessage("Password must be at least 8 characters"),
+  handleInputError,
   createAccount
 );
 

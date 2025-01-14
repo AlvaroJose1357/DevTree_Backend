@@ -1,18 +1,8 @@
 import { Request, Response } from "express";
 import User from "../models/User";
 import { hashPassword } from "../utils/auth";
-import { validationResult } from "express-validator";
 
 export const createAccount = async (req: Request, res: Response) => {
-  // manejando los errores de express-validator
-  // sacamos los errores de la validacion del req
-  let errors = validationResult(req);
-  // si hay errores los mostramos en la respuesta
-  if (!errors.isEmpty()) {
-    res.status(400).json({ errors: errors.array() });
-    return;
-  }
-
   // se esta utilizando la importacion dinamica para importar la libreria slug debido a que en la version 10.0.0 de la libreria solamente funciona con ESModules y Como estamos usando Typescript que se encarga de compilar nuestro codigo este lo pasa a CommonJS y esto genera un error, y para solucionar este problema se utiliza la importacion dinamica para que asi cuando se compile el codigo se pueda importar la libreria slug de manera correcta
   const { default: slug } = await import("slug");
   try {
