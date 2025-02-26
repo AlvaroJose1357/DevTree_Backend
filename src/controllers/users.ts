@@ -36,7 +36,8 @@ export const createAccount = async (req: Request, res: Response) => {
     // guardando el usuario en la base de datos
     await newUser.save();
     // res.send("User created successfully");
-    res.status(201).json(newUser);
+    // res.status(201).json(newUser);
+    res.status(201).send("Usuario creado correctamente");
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
