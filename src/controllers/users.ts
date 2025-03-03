@@ -60,7 +60,7 @@ export const login = async (req: Request, res: Response) => {
       res.status(401).json({ error: error.message });
       return;
     }
-    res.status(200).json({ message: "User logged in" });
+    res.status(200).send("Usuario logueado correctamente");
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
