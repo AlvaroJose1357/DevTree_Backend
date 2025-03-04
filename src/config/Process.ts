@@ -7,4 +7,9 @@
 // import de dotenv
 import "dotenv/config";
 
-export const { PORT = 3000, MONGODB_URL, FRONTEND_URL } = process.env;
+export const {
+  PORT = 3000,
+  MONGODB_URL,
+  FRONTEND_URL,
+  JWT_SECRET,
+} = process.env;
