@@ -6,4 +6,6 @@ export const generateJWT = (payload: JwtPayload) => {
   });
   return token;
 };
-// export const verifyJWT = (token: string) => {};
+export const verifyJWT = (token: string) => {
+  return jwt.verify(token, JWT_SECRET);
+};
