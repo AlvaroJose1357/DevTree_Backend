@@ -5,6 +5,7 @@ export interface IUser {
   name: string;
   email: string;
   password: string;
+  description: string;
 }
 
 const userSchema = new mongoose.Schema({
@@ -21,6 +22,7 @@ const userSchema = new mongoose.Schema({
   // el unique lo que hace es que no se pueden repetir los elementos en la base de datos
   email: { type: String, required: true, trim: true, unique: true },
   password: { type: String, required: true, trim: true },
+  description: { type: String, default: "" },
 });
 
 const User = mongoose.model<IUser>("User", userSchema);
