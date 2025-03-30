@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import User from "../models/User";
 import { checkPassword, hashPassword } from "../utils/auth";
-import { generateJWT, verifyJWT } from "../utils/jwt";
+import { generateJWT } from "../utils/jwt";
 import slugify from "slugify";
 
 export const createAccount = async (req: Request, res: Response) => {
