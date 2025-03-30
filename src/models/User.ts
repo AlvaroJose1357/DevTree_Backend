@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+import { Document, model, Schema } from "mongoose";
 
-export interface IUser {
+export interface IUser extends Document {
   handle: string;
   name: string;
   email: string;
@@ -8,7 +8,7 @@ export interface IUser {
   description: string;
 }
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
   // el lowercase lo que hace es que si se ingresa un string con mayusculas, lo convierte a minusculas
   handle: {
     type: String,
@@ -25,5 +25,5 @@ const userSchema = new mongoose.Schema({
   description: { type: String, default: "" },
 });
 
-const User = mongoose.model<IUser>("User", userSchema);
+const User = model<IUser>("User", userSchema);
 export default User;

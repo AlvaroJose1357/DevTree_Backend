@@ -1,6 +1,11 @@
 import { Router } from "express";
 import { body } from "express-validator";
-import { createAccount, getUser, login } from "../controllers/users";
+import {
+  createAccount,
+  getUser,
+  login,
+  updateProfile,
+} from "../controllers/users";
 import { handleInputError } from "../middleware/validation";
 import { authMiddleware } from "../middleware/auth";
 const router = Router();
@@ -28,5 +33,13 @@ router.post(
 );
 
 router.get("/user", authMiddleware, getUser);
+router.patch(
+  "/user",
+  body("handle").notEmpty().withMessage("Handle is required"),
+  body("description").notEmpty().withMessage("Description is required"),
+  handleInputError,
+  authMiddleware,
+  updateProfile
+);
 
 export default router;

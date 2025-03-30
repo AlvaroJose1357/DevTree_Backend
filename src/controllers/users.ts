@@ -74,3 +74,30 @@ export const login = async (req: Request, res: Response) => {
 export const getUser = async (req: Request, res: Response) => {
   res.status(200).json(req.user);
 };
+
+export const updateProfile = async (req: Request, res: Response) => {
+  try {
+    const { description } = req.body;
+    const { default: slug } = await import("slug");
+    // importando el handle de la peticion
+    const handle = slug(req.body.handle, "");
+    // si ya existe el handle
+    const handleExists = await User.findOne({ handle });
+    if (handleExists && handleExists.email !== req.user.email) {
+      const error = new Error("Handle already exists");
+      res.status(409).json({ error: error.message });
+      return;
+    }
+    // actualizando el usuario, como se lo pasamos al request por medio de la verificacion del middleware de authMiddleware, podemos acceder a el
+    req.user.handle = handle;
+    req.user.description = description;
+    // guardando el usuario en la base de datos
+    await req.user.save();
+    res.status(200).send("Usuario actualizado correctamente");
+  } catch (e) {
+    console.error(e);
+    const error = new Error("Hubo un error al actualizar el perfil");
+    res.status(500).json({ error: error.message });
+    return;
+  }
+};
