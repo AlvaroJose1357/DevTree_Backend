@@ -14,7 +14,7 @@ export const createAccount = async (req: Request, res: Response) => {
     });
     // si el usuario ya existe
     if (userExists) {
-      const error = new Error("User already exists");
+      const error = new Error("Usuario ya existente");
       res.status(409).json({ error: error.message });
       return;
     }
@@ -23,7 +23,7 @@ export const createAccount = async (req: Request, res: Response) => {
     // si ya existe el handle
     const handleExists = await User.findOne({ handle });
     if (handleExists) {
-      const error = new Error("Handle already exists");
+      const error = new Error(" Handle ya existente");
       res.status(409).json({ error: error.message });
       return;
     }
@@ -51,14 +51,14 @@ export const login = async (req: Request, res: Response) => {
   try {
     const userExist = await User.findOne({ email });
     if (!userExist) {
-      const error = new Error("User not found");
+      const error = new Error("Usuario no encontrado");
       res.status(404).json({ error: error.message });
       return;
     }
     // validar la contraseña, si la contraseña no es correcta devolver un error
     const isValidPassword = await checkPassword(password, userExist.password);
     if (!isValidPassword) {
-      const error = new Error("Invalid password");
+      const error = new Error("Contraseña incorrecta");
       res.status(401).json({ error: error.message });
       return;
     }
@@ -85,7 +85,7 @@ export const updateProfile = async (req: Request, res: Response) => {
     // si ya existe el handle
     const handleExists = await User.findOne({ handle });
     if (handleExists && handleExists.email !== req.user.email) {
-      const error = new Error("Handle already exists");
+      const error = new Error(" Handle ya existente");
       res.status(409).json({ error: error.message });
       return;
     }
