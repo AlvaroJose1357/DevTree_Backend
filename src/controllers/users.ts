@@ -2,10 +2,11 @@ import { Request, Response } from "express";
 import User from "../models/User";
 import { checkPassword, hashPassword } from "../utils/auth";
 import { generateJWT, verifyJWT } from "../utils/jwt";
+import slugify from "slugify";
 
 export const createAccount = async (req: Request, res: Response) => {
   // se esta utilizando la importacion dinamica para importar la libreria slug debido a que en la version 10.0.0 de la libreria solamente funciona con ESModules y Como estamos usando Typescript que se encarga de compilar nuestro codigo este lo pasa a CommonJS y esto genera un error, y para solucionar este problema se utiliza la importacion dinamica para que asi cuando se compile el codigo se pueda importar la libreria slug de manera correcta
-  const { default: slug } = await import("slug");
+  // const { default: slug } = await import("slug");
   try {
     const { email, password } = req.body;
     const userExists = await User.findOne({
@@ -18,7 +19,7 @@ export const createAccount = async (req: Request, res: Response) => {
       return;
     }
     // importando el handle de la peticion
-    const handle = slug(req.body.handle, "");
+    const handle = slugify(req.body.handle, "");
     // si ya existe el handle
     const handleExists = await User.findOne({ handle });
     if (handleExists) {
@@ -32,7 +33,7 @@ export const createAccount = async (req: Request, res: Response) => {
     // hasheando la contraseña
     newUser.password = await hashPassword(password);
     // creando el handle
-    newUser.handle = slug(handle, "");
+    newUser.handle = slugify(handle, "");
 
     // guardando el usuario en la base de datos
     await newUser.save();
@@ -78,9 +79,9 @@ export const getUser = async (req: Request, res: Response) => {
 export const updateProfile = async (req: Request, res: Response) => {
   try {
     const { description } = req.body;
-    const { default: slug } = await import("slug");
+    // const { default: slug } = await import("slug");
     // importando el handle de la peticion
-    const handle = slug(req.body.handle, "");
+    const handle = slugify(req.body.handle, "");
     // si ya existe el handle
     const handleExists = await User.findOne({ handle });
     if (handleExists && handleExists.email !== req.user.email) {
