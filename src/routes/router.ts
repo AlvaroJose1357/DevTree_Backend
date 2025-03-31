@@ -5,6 +5,7 @@ import {
   getUser,
   login,
   updateProfile,
+  uploadImage,
 } from "../controllers/users";
 import { handleInputError } from "../middleware/validation";
 import { authMiddleware } from "../middleware/auth";
@@ -41,5 +42,7 @@ router.patch(
   authMiddleware,
   updateProfile
 );
+
+router.post("/user/image", authMiddleware, uploadImage);
 
 export default router;

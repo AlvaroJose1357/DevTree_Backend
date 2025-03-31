@@ -1,8 +1,11 @@
 import { Request, Response } from "express";
+import slugify from "slugify";
+import formidable from "formidable";
+import { v4 as uuid } from "uuid";
 import User from "../models/User";
 import { checkPassword, hashPassword } from "../utils/auth";
 import { generateJWT } from "../utils/jwt";
-import slugify from "slugify";
+import cloudinary from "../config/Cloudinary";
 
 export const createAccount = async (req: Request, res: Response) => {
   // se esta utilizando la importacion dinamica para importar la libreria slug debido a que en la version 10.0.0 de la libreria solamente funciona con ESModules y Como estamos usando Typescript que se encarga de compilar nuestro codigo este lo pasa a CommonJS y esto genera un error, y para solucionar este problema se utiliza la importacion dinamica para que asi cuando se compile el codigo se pueda importar la libreria slug de manera correcta
@@ -95,6 +98,36 @@ export const updateProfile = async (req: Request, res: Response) => {
     // guardando el usuario en la base de datos
     await req.user.save();
     res.status(200).send("Usuario actualizado correctamente");
+  } catch (e) {
+    console.error(e);
+    const error = new Error("Hubo un error al actualizar el perfil");
+    res.status(500).json({ error: error.message });
+    return;
+  }
+};
+
+export const uploadImage = async (req: Request, res: Response) => {
+  const form = formidable({ multiples: false });
+  try {
+    form.parse(req, (error, fields, files) => {
+      // console.log(files.file[0].filepath);
+      cloudinary.uploader.upload(
+        files.file[0].filepath, // la url de la imagen
+        { public_id: uuid() }, // opciones de la subida
+        async (uploadError, result) => {
+          // resultado de la subida
+          if (uploadError) {
+            // console.error(uploadError);
+            const error = new Error("Hubo un error al subir la imagen");
+            res.status(500).json({ error: error.message });
+            return;
+          }
+          if (result) {
+            console.log(result.secure_url);
+          }
+        }
+      );
+    });
   } catch (e) {
     console.error(e);
     const error = new Error("Hubo un error al actualizar el perfil");
