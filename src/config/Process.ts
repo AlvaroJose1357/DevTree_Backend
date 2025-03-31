@@ -8,8 +8,11 @@
 import "dotenv/config";
 
 export const {
-  PORT = 3000,
+  PORT = 5000,
   MONGODB_URL,
   FRONTEND_URL,
   JWT_SECRET,
+  CLOUD_NAME,
+  API_KEY_CLOUDINARY,
+  API_SECRET_CLOUDINARY,
 } = process.env;
