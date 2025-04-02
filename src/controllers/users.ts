@@ -123,7 +123,11 @@ export const uploadImage = async (req: Request, res: Response) => {
             return;
           }
           if (result) {
-            console.log(result.secure_url);
+            // console.log(result.secure_url);
+            req.user.image = result.secure_url; // la url de la imagen
+            // guardando el usuario en la base de datos
+            await req.user.save();
+            res.status(200).json({ image: result.secure_url });
           }
         }
       );
