@@ -81,7 +81,7 @@ export const getUser = async (req: Request, res: Response) => {
 
 export const updateProfile = async (req: Request, res: Response) => {
   try {
-    const { description } = req.body;
+    const { description, links } = req.body;
     // const { default: slug } = await import("slug");
     // importando el handle de la peticion
     const handle = slugify(req.body.handle, "");
@@ -95,6 +95,7 @@ export const updateProfile = async (req: Request, res: Response) => {
     // actualizando el usuario, como se lo pasamos al request por medio de la verificacion del middleware de authMiddleware, podemos acceder a el
     req.user.handle = handle;
     req.user.description = description;
+    req.user.links = links;
     // guardando el usuario en la base de datos
     await req.user.save();
     res.status(200).send("Usuario actualizado correctamente");
