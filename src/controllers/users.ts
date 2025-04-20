@@ -140,3 +140,32 @@ export const uploadImage = async (req: Request, res: Response) => {
     return;
   }
 };
+
+export const getUserByHandle = async (req: Request, res: Response) => {
+  try {
+    const { handle } = req.params;
+    const user = await User.findOne({ handle }).select(
+      "-_id -__v -password -email"
+    );
+    if (!user) {
+      const error = new Error("Usuario no encontrado");
+      res.status(409).json({ error: error.message });
+      return;
+    }
+    // forma 1 de optenerlos
+    // res.status(200).json({
+    //   handle: user.handle,
+    //   name: user.name,
+    //   description: user.description,
+    //   image: user.image,
+    //   links: user.links,
+    // });
+    // forma 2 de optenerlos es usando el select en el findOne
+    res.status(200).json(user);
+  } catch (e) {
+    console.error(e);
+    const error = new Error("Hubo un error al obtener el usuario");
+    res.status(500).json({ error: error.message });
+    return;
+  }
+};
