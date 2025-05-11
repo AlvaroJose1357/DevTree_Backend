@@ -7,6 +7,7 @@ import {
   login,
   updateProfile,
   uploadImage,
+  searchByHandle,
 } from "../controllers/users";
 import { handleInputError } from "../middleware/validation";
 import { authMiddleware } from "../middleware/auth";
@@ -38,7 +39,6 @@ router.get("/user", authMiddleware, getUser);
 router.patch(
   "/user",
   body("handle").notEmpty().withMessage("Handle is required"),
-  body("description").notEmpty().withMessage("Description is required"),
   handleInputError,
   authMiddleware,
   updateProfile
@@ -47,5 +47,12 @@ router.patch(
 router.post("/user/image", authMiddleware, uploadImage);
 
 router.get("/:handle", getUserByHandle);
+
+router.post(
+  "/search",
+  body("handle").notEmpty().withMessage("Handle is required"),
+  handleInputError,
+  searchByHandle
+);
 
 export default router;
