@@ -179,7 +179,7 @@ export const searchByHandle = async (req: Request, res: Response) => {
       res.status(409).json({ error: error.message });
       return;
     }
-    res.status(200).send(`${handle} disponible`);
+    res.status(200).send(`${handle} esta disponible`);
   } catch (e) {
     console.error(e);
     const error = new Error("Hubo un error al buscar el usuario");
